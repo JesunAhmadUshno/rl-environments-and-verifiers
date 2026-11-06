@@ -21,3 +21,7 @@ jobs:
         run: python tests/test_build_rl.py
       - name: Build runner
         run: python level-2-build/run_build.py
+      - name: Deep tests
+        run: python tests/test_deep_rl.py
+      - name: Deep runner
+        run: python level-3-deep/run_deep.py
