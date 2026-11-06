@@ -17,3 +17,7 @@ jobs:
         run: python tests/test_learn_rl.py
       - name: Learn runner
         run: python level-1-learn/run_learn.py
+      - name: Build tests
+        run: python tests/test_build_rl.py
+      - name: Build runner
+        run: python level-2-build/run_build.py
