@@ -4,10 +4,16 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                 "level-1-learn"))
-from rl_learn import (GOAL, PIT, START, evaluate_random, greedy_action,
-                      make_greedy_policy, q_greedy_trajectory, run_episode,
-                      step, train_q_learning, value_iteration,
-                      verify_trajectory)
+from rl_learn import (
+    evaluate_random,
+    make_greedy_policy,
+    q_greedy_trajectory,
+    run_episode,
+    step,
+    train_q_learning,
+    value_iteration,
+    verify_trajectory,
+)
 
 V = value_iteration()
 
@@ -60,17 +66,27 @@ def test_verifier_accepts_valid():
 def test_verifier_rejects_tampering():
     import copy
     traj = run_episode(make_greedy_policy(V))
-    t = copy.deepcopy(traj); t["rewards"][0] = 0
-    ok, r = verify_trajectory(t); assert not ok and "reward_mismatch" in r
-    t = copy.deepcopy(traj); t["states"][2] = [3, 3]
-    ok, r = verify_trajectory(t); assert not ok and "illegal_transition" in r
-    t = copy.deepcopy(traj); t["return"] += 5
-    ok, r = verify_trajectory(t); assert not ok and "return_mismatch" in r
-    t = copy.deepcopy(traj); t["states"][0] = [1, 0]
-    ok, r = verify_trajectory(t); assert not ok and "bad_start" in r
+    t = copy.deepcopy(traj)
+    t["rewards"][0] = 0
+    ok, r = verify_trajectory(t)
+    assert not ok and "reward_mismatch" in r
+    t = copy.deepcopy(traj)
+    t["states"][2] = [3, 3]
+    ok, r = verify_trajectory(t)
+    assert not ok and "illegal_transition" in r
+    t = copy.deepcopy(traj)
+    t["return"] += 5
+    ok, r = verify_trajectory(t)
+    assert not ok and "return_mismatch" in r
+    t = copy.deepcopy(traj)
+    t["states"][0] = [1, 0]
+    ok, r = verify_trajectory(t)
+    assert not ok and "bad_start" in r
     pit = run_episode(lambda s, i: [2, 2, 2][i] if i < 3 else 0)
-    t = copy.deepcopy(pit); t["reached_goal"] = True
-    ok, r = verify_trajectory(t); assert not ok and "goal_claim_false" in r
+    t = copy.deepcopy(pit)
+    t["reached_goal"] = True
+    ok, r = verify_trajectory(t)
+    assert not ok and "goal_claim_false" in r
 
 
 def test_random_policy_deterministic_and_bounded():

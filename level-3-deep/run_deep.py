@@ -9,9 +9,17 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from rl_deep import (ABLATIONS, CONFIG, EVAL_EPISODES_PER_SEED, EVAL_SEEDS,
-                     evaluate, greedy_episode, initial_theta, theta_json,
-                     train)
+from rl_deep import (
+    ABLATIONS,
+    CONFIG,
+    EVAL_EPISODES_PER_SEED,
+    EVAL_SEEDS,
+    evaluate,
+    greedy_episode,
+    initial_theta,
+    theta_json,
+    train,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 

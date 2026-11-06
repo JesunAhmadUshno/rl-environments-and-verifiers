@@ -1,0 +1,4 @@
+# rl-environments-and-verifiers runs on the Python standard library only.
+# Every level (Learn, Build, Deep) is dependency-free by design.
+# This file exists so Dependabot pip updates have a manifest to watch.
+# If a real dependency is ever added, it is pinned here.
