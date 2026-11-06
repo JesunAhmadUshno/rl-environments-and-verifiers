@@ -8,9 +8,18 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from rl_learn import (GOAL, PIT, START, evaluate_random, greedy_action,
-                      make_greedy_policy, q_greedy_trajectory, run_episode,
-                      train_q_learning, value_iteration, verify_trajectory)
+from rl_learn import (
+    GOAL,
+    PIT,
+    START,
+    evaluate_random,
+    make_greedy_policy,
+    q_greedy_trajectory,
+    run_episode,
+    train_q_learning,
+    value_iteration,
+    verify_trajectory,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 

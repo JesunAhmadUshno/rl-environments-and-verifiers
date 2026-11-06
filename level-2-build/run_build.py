@@ -9,12 +9,25 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from rl_build import (CLIFF, GW, TARGET, bandit_evaluate_random,
-                      bandit_explore_then_exploit, bandit_run_episode,
-                      bandit_verify, grid_evaluate_random,
-                      grid_greedy_policy, grid_q_greedy, grid_run_episode,
-                      grid_train_q, grid_value_iteration, grid_verify,
-                      seq_evaluate_random, seq_run_episode, seq_verify)
+from rl_build import (
+    CLIFF,
+    GW,
+    TARGET,
+    bandit_evaluate_random,
+    bandit_explore_then_exploit,
+    bandit_run_episode,
+    bandit_verify,
+    grid_evaluate_random,
+    grid_greedy_policy,
+    grid_q_greedy,
+    grid_run_episode,
+    grid_train_q,
+    grid_value_iteration,
+    grid_verify,
+    seq_evaluate_random,
+    seq_run_episode,
+    seq_verify,
+)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -33,15 +46,17 @@ def grid_block(spec, seed_random):
     scenarios = []
     ok, r = grid_verify(spec, greedy)
     scenarios.append(scenario("valid_greedy", ok, None, r))
-    t = copy.deepcopy(greedy); t["rewards"][0] = 0
+    t = copy.deepcopy(greedy)
+    t["rewards"][0] = 0
     ok, r = grid_verify(spec, t)
     scenarios.append(scenario("tampered_reward", ok, "reward_mismatch", r))
-    t = copy.deepcopy(greedy); t["return"] = greedy["return"] + 5
+    t = copy.deepcopy(greedy)
+    t["return"] = greedy["return"] + 5
     ok, r = grid_verify(spec, t)
     scenarios.append(scenario("wrong_return_claim", ok, "return_mismatch", r))
     if spec.name == "gridworld-4x4":
         pit = grid_run_episode(spec, lambda s, i: [2, 2, 2][i] if i < 3 else 0)
-        extra_traj, extra = pit, copy.deepcopy(pit)
+        extra = copy.deepcopy(pit)
         extra["reached_goal"] = True
         ok, r = grid_verify(spec, extra)
         scenarios.append(scenario("false_goal_claim", ok, "goal_claim_false", r))
@@ -51,7 +66,7 @@ def grid_block(spec, seed_random):
                           "return_mismatch; goal claim on the pit log rejected "
                           "with goal_claim_false"}
         bad_traj = pit
-        bad_key, bad_label = "pit_trajectory", "pit"
+        bad_key = "pit_trajectory"
     else:
         cliff = grid_run_episode(spec, lambda s, i: 1)
         laundered = copy.deepcopy(cliff)
@@ -67,7 +82,7 @@ def grid_block(spec, seed_random):
                 "detail": "cliff step relabelled as a safe step rejected with "
                           "illegal_transition and reward_mismatch"}
         bad_traj = cliff
-        bad_key, bad_label = "cliff_trajectory", "cliff"
+        bad_key = "cliff_trajectory"
     block = {
         "task": spec.name,
         "optimal_value_start": V[spec.start],
@@ -113,7 +128,8 @@ def main():
     forged["reached_goal"] = True
     ok, r = bandit_verify(forged)
     b_scen.append(scenario("tampered_reward", ok, "reward_mismatch", r))
-    t = copy.deepcopy(b_opt); t["return"] = 55
+    t = copy.deepcopy(b_opt)
+    t["return"] = 55
     ok, r = bandit_verify(t)
     b_scen.append(scenario("wrong_return_claim", ok, "return_mismatch", r))
     # Payoff forgery is the tampered log above; the specific hack scenario
@@ -155,7 +171,8 @@ def main():
     claimed["reached_goal"] = True
     ok, r = seq_verify(claimed)
     s_scen.append(scenario("tampered_reward", ok, "reward_mismatch", r))
-    t = copy.deepcopy(s_opt); t["return"] = 15
+    t = copy.deepcopy(s_opt)
+    t["return"] = 15
     ok, r = seq_verify(t)
     s_scen.append(scenario("wrong_return_claim", ok, "return_mismatch", r))
     ok, r = seq_verify(claimed)
