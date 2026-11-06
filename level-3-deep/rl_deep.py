@@ -16,9 +16,16 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__))), "level-2-build"))
-from rl_build import (CLIFF, GW, bandit_run_episode, bandit_verify,  # noqa: E402
-                      grid_run_episode, grid_verify, seq_run_episode,
-                      seq_verify)
+from rl_build import (  # noqa: E402
+    CLIFF,
+    GW,
+    bandit_run_episode,
+    bandit_verify,
+    grid_run_episode,
+    grid_verify,
+    seq_run_episode,
+    seq_verify,
+)
 
 GROUP = 16
 EVAL_SEEDS = [9101, 9102, 9103, 9104, 9105]
