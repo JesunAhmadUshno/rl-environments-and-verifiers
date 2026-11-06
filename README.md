@@ -61,6 +61,19 @@ Deep shipped a GRPO-style RLVR teaching analogue in Python stdlib on the Muse VM
 
 Full measured tables, ablations, failure modes, and grade (8,400 of 10,000): level-3-deep/README.md. Design and oracles: level-3-deep/DEEP-SPEC.md. Code: level-3-deep/rl_deep.py and run_deep.py. Tests: tests/test_deep_rl.py. The rest of the v2 Deep scope is the v1.1 backlog in ROADMAP.md.
 
+
+## Fan-out
+
+Written fan-out set for v1.0, in fanout/: blog-post.md,
+tutorial.md (every command verified by running it),
+website-page.md, linkedin-post.md (DRAFT NOT POSTED, link as
+the first-comment line), paper-candidate.md (submission is
+Jesun's tap, nothing submitted), and release-notes.md covering
+v0.1, v0.5, and v1.0. The full channel log and per-piece
+publicity grades are in PUBLICITY.md. Every piece states
+plainly: teaching analogue, tabular softmax, no LLM, no
+KL/clipping, tiny deterministic tasks.
+
 ## License
 
 Code: Apache-2.0 (see LICENSE). Tutorials: CC BY 4.0. Ruled in D-V3-11, 2026-11-04.
