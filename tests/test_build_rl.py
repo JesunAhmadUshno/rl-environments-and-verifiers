@@ -5,12 +5,27 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                 "level-2-build"))
-from rl_build import (CLIFF, GW, PAYOFFS, TARGET, bandit_evaluate_random,
-                      bandit_explore_then_exploit, bandit_run_episode,
-                      bandit_verify, grid_evaluate_random, grid_greedy_policy,
-                      grid_q_greedy, grid_run_episode, grid_step,
-                      grid_train_q, grid_value_iteration, grid_verify,
-                      seq_evaluate_random, seq_run_episode, seq_verify)
+from rl_build import (
+    CLIFF,
+    GW,
+    PAYOFFS,
+    TARGET,
+    bandit_evaluate_random,
+    bandit_explore_then_exploit,
+    bandit_run_episode,
+    bandit_verify,
+    grid_evaluate_random,
+    grid_greedy_policy,
+    grid_q_greedy,
+    grid_run_episode,
+    grid_step,
+    grid_train_q,
+    grid_value_iteration,
+    grid_verify,
+    seq_evaluate_random,
+    seq_run_episode,
+    seq_verify,
+)
 
 
 def test_gridworld_oracles_still_hold():
@@ -50,12 +65,17 @@ def test_cliff_trajectory_oracle():
 def test_cliff_verifier_rejects_laundering_and_tamper():
     traj = grid_run_episode(CLIFF, lambda s, i: 1)
     t = copy.deepcopy(traj)
-    t["states"][1] = [1, 0]; t["rewards"][0] = -1; t["return"] = -1; t["terminal"] = False
+    t["states"][1] = [1, 0]
+    t["rewards"][0] = -1
+    t["return"] = -1
+    t["terminal"] = False
     ok, r = grid_verify(CLIFF, t)
     assert not ok and "illegal_transition" in r and "reward_mismatch" in r
     good = grid_run_episode(CLIFF, grid_greedy_policy(CLIFF, grid_value_iteration(CLIFF)))
-    t = copy.deepcopy(good); t["return"] += 5
-    ok, r = grid_verify(CLIFF, t); assert not ok and "return_mismatch" in r
+    t = copy.deepcopy(good)
+    t["return"] += 5
+    ok, r = grid_verify(CLIFF, t)
+    assert not ok and "return_mismatch" in r
 
 
 def test_cliff_q_learning_greedy_is_optimal():
@@ -75,7 +95,9 @@ def test_bandit_oracles():
 
 def test_bandit_verifier_rejects_payoff_forgery():
     forged = bandit_run_episode(lambda i, h: 0)
-    forged["rewards"] = [5] * 10; forged["return"] = 50; forged["reached_goal"] = True
+    forged["rewards"] = [5] * 10
+    forged["return"] = 50
+    forged["reached_goal"] = True
     ok, r = bandit_verify(forged)
     assert not ok and "reward_mismatch" in r
 
@@ -103,7 +125,9 @@ def test_sequence_oracles():
 
 def test_sequence_verifier_rejects_reward_claiming():
     claimed = seq_run_episode(lambda i, h: 0)
-    claimed["rewards"] = [3, 3, 3, 3]; claimed["return"] = 12; claimed["reached_goal"] = True
+    claimed["rewards"] = [3, 3, 3, 3]
+    claimed["return"] = 12
+    claimed["reached_goal"] = True
     ok, r = seq_verify(claimed)
     assert not ok and "reward_mismatch" in r
 

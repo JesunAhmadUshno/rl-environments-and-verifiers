@@ -6,10 +6,20 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-3-deep"))
-from rl_deep import (apply_group_update, episode_reward, evaluate,  # noqa: E402
-                     greedy_episode, group_advantages, initial_theta,
-                     sample_episode, score_episodes, softmax, train)
 import random  # noqa: E402
+
+from rl_deep import (  # noqa: E402
+    apply_group_update,
+    episode_reward,
+    evaluate,
+    greedy_episode,
+    group_advantages,
+    initial_theta,
+    sample_episode,
+    score_episodes,
+    softmax,
+    train,
+)
 
 
 def test_softmax_uniform_oracle():
