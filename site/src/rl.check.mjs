@@ -19,7 +19,7 @@ const eq = (a, b, msg) => { assert.deepStrictEqual(a, b, msg); n++; };
 
 // 1. Learn: verifier grading, value iteration, random baseline, Q-learning seed 7.
 {
-  const sc = rl.graderScenarios('gridworld-4x4', 'learn').map((s) => ({ name: s.name, passed_as_expected: rl.gradeScenario('gridworld-4x4', s).passed_as_expected }));
+  const sc = rl.graderScenarios('gridworld-4x4', 'learn', learn.grader_scenarios.map((x) => x.name)).map((s) => ({ name: s.name, passed_as_expected: rl.gradeScenario('gridworld-4x4', s).passed_as_expected }));
   eq(sc, learn.grader_scenarios, 'learn grader scenarios');
   const { V } = rl.gridValueIteration(rl.GW);
   eq(V, learn.optimal_values, 'learn optimal values');
@@ -35,9 +35,13 @@ const eq = (a, b, msg) => { assert.deepStrictEqual(a, b, msg); n++; };
 {
   const randomSeeds = { 'gridworld-4x4': 20261105, 'cliffgrid-3x5': 20261106, 'bandit-3arm-deterministic': 20261107, 'sequence-memory-4': 20261108 };
   for (const env of build.environments) {
-    const sc = rl.graderScenarios(env.task).map((s) => ({ name: s.name, passed_as_expected: rl.gradeScenario(env.task, s).passed_as_expected }));
+    const names = env.grader_scenarios.map((x) => x.name);
+    // the port's own scenario names match the file, except one bandit scenario it labels payoff_relabel
+    const own = rl.graderScenarios(env.task).map((x) => x.name);
+    eq(own.filter((x, i) => x !== names[i]), env.task === 'bandit-3arm-deterministic' ? ['payoff_relabel'] : [], `${env.task} scenario order`);
+    const sc = rl.graderScenarios(env.task, 'build', names).map((s) => ({ name: s.name, passed_as_expected: rl.gradeScenario(env.task, s).passed_as_expected }));
     eq(sc, env.grader_scenarios, `${env.task} grader scenarios`);
-    const hack = rl.graderScenarios(env.task).find((s) => env.hack_attempt.name.includes(s.name) || s.name === env.hack_attempt.name);
+    const hack = rl.graderScenarios(env.task, 'build', names).find((s) => env.hack_attempt.name.includes(s.name) || s.name === env.hack_attempt.name);
     eq(!rl.verify(env.task, hack.traj)[0], env.hack_attempt.verifier_caught, `${env.task} hack attempt caught`);
     const seed = randomSeeds[env.task];
     if (rl.GRID_SPECS[env.task]) {

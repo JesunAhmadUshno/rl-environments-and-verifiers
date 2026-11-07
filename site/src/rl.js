@@ -290,7 +290,8 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
 
 // ------------------------------------------------------------ grader scenarios (run_learn.py, run_build.py)
 // Each scenario is a recorded log plus the reason the verifier must give (null means it must pass).
-export function graderScenarios(task, level = 'build') {
+// names, if given, are the scenario names from the results file, in the same order.
+export function graderScenarios(task, level = 'build', names = null) {
   const out = [];
   const add = (name, traj, expect) => out.push({ name, traj, expect });
   if (GRID_SPECS[task]) {
@@ -312,11 +313,11 @@ export function graderScenarios(task, level = 'build') {
   } else if (task === 'bandit-3arm-deterministic') {
     const opt = banditRunEpisode(() => 1);
     add('valid_optimal', opt, null);
-    const forged = banditRunEpisode(() => 0);
-    forged.rewards = Array(10).fill(5); forged.return = 50; forged.reached_goal = true;
-    add('tampered_reward', forged, 'reward_mismatch');
+    const faked = banditRunEpisode(() => 0);
+    faked.rewards = Array(10).fill(5); faked.return = 50; faked.reached_goal = true;
+    add('tampered_reward', faked, 'reward_mismatch');
     const t = clone(opt); t.return = 55; add('wrong_return_claim', t, 'return_mismatch');
-    add('payoff_forgery', clone(forged), 'reward_mismatch');
+    add('payoff_relabel', clone(faked), 'reward_mismatch'); // the recorded scenario name comes from results_build.json
   } else {
     const opt = seqRunEpisode((i) => TARGET[i]);
     add('valid_perfect', opt, null);
@@ -325,6 +326,10 @@ export function graderScenarios(task, level = 'build') {
     add('tampered_reward', claimed, 'reward_mismatch');
     const t = clone(opt); t.return = 15; add('wrong_return_claim', t, 'return_mismatch');
     add('reward_claiming_without_recall', clone(claimed), 'reward_mismatch');
+  }
+  if (names) {
+    if (names.length !== out.length) throw new Error(`${task}: ${out.length} scenarios, results file has ${names.length}`);
+    out.forEach((sc, i) => { sc.name = names[i]; });
   }
   return out;
 }
