@@ -4,14 +4,14 @@ import build from '../../level-2-build/results_build.json';
 import deep from '../../level-3-deep/results_deep.json';
 import seeds from '../../level-3-deep/results_seeds.json';
 import curves from '../../level-3-deep/results_deep_curves.json';
-import roadmapMd from '../../ROADMAP.md?raw';
-import readmeMd from '../../README.md?raw';
 import * as rl from './rl.js';
 
 const REPO = 'https://github.com/JesunAhmadUshno/rl-environments-and-verifiers';
 const blob = (p) => `${REPO}/blob/main/${p}`;
 const HASHES = __HASHES__; // eslint-disable-line no-undef
 const TESTS = __TESTS__; // eslint-disable-line no-undef
+const QUOTED = __QUOTED__; // eslint-disable-line no-undef
+const roadmap = __ROADMAP__; // eslint-disable-line no-undef
 const f3 = (x) => (Math.round(x * 1000) / 1000).toString();
 const pct = (x, d = 1) => `${(x * 100).toFixed(d)}%`;
 // order-independent deep equality (the results files store keys sorted, the port does not)
@@ -263,14 +263,19 @@ const REASONS = {
   illegal_action: 'an arm outside 0, 1, 2 was logged',
 };
 
+// The GridWorld playground offers the Learn scenarios (which include teleport); the others use Build's. Names come from the results files.
+const scenariosOf = (task) => (task === 'gridworld-4x4'
+  ? rl.graderScenarios(task, 'learn', learn.grader_scenarios.map((x) => x.name))
+  : rl.graderScenarios(task, 'build', envOf(task).grader_scenarios.map((x) => x.name)));
+
 function Playground() {
   const [task, setTask] = useState('gridworld-4x4');
-  const scenarios = useMemo(() => rl.graderScenarios(task, task === 'gridworld-4x4' ? 'learn' : 'build'), [task]);
+  const scenarios = useMemo(() => scenariosOf(task), [task]);
   const [scenario, setScenario] = useState('teleport');
-  const [traj, setTraj] = useState(() => structuredClone(rl.graderScenarios('gridworld-4x4', 'learn').find((s) => s.name === 'teleport').traj));
+  const [traj, setTraj] = useState(() => structuredClone(scenariosOf('gridworld-4x4').find((s) => s.name === 'teleport').traj));
   const sp = rl.GRID_SPECS[task];
   const load = (name, list = scenarios) => { setScenario(name); setTraj(structuredClone(list.find((s) => s.name === name).traj)); };
-  const changeTask = (t) => { setTask(t); const list = rl.graderScenarios(t, t === 'gridworld-4x4' ? 'learn' : 'build'); load(list[0].name, list); };
+  const changeTask = (t) => { setTask(t); const list = scenariosOf(t); load(list[0].name, list); };
   const [ok, reasons] = rl.verify(task, traj);
   const edit = (fn) => { setScenario('edited'); setTraj((t) => { const n = structuredClone(t); fn(n); return n; }); };
   const honestClaims = (n) => {
@@ -375,14 +380,14 @@ function Playground() {
 
 function PostMortems() {
   const rows = build.environments.map((e) => ({ task: e.task, ...e.hack_attempt, live: (() => {
-    const s = rl.graderScenarios(e.task).find((x) => e.hack_attempt.name.includes(x.name));
+    const s = rl.graderScenarios(e.task, 'build', e.grader_scenarios.map((x) => x.name)).find((x) => e.hack_attempt.name.includes(x.name));
     return rl.verify(e.task, s.traj)[1];
   })() }));
   return (
     <section id="hacks" className="card window reveal" data-title="post_mortems.md - recorded">
       <p className="eyebrow">Reward-hacking post-mortems · recorded</p>
       <h2>Four attempts to get paid without doing the task, and the check that caught each.</h2>
-      <p className="sub">Each card is the <span className="mono">hack_attempt</span> entry in <a href={blob('level-2-build/results_build.json')}>results_build.json</a>. The reason codes are re-derived live by the in-page verifier from the same forged log. Two cards name a limit replay cannot see.</p>
+      <p className="sub">Each card is the <span className="mono">hack_attempt</span> entry in <a href={blob('level-2-build/results_build.json')}>results_build.json</a>. The reason codes are re-derived live by the in-page verifier from the same tampered log. Two cards name a limit replay cannot see.</p>
       <div className="grid2" style={{ marginTop: 16 }}>
         {rows.map((r) => (
           <div className="tile" key={r.task}>
@@ -788,11 +793,6 @@ function Baselines() {
   );
 }
 
-// ROADMAP.md shown as written, with internal project codes swapped for plain names.
-const PLAIN = [[/the agent-evals harness \(P27\)/g, 'an external scoring harness'], [/P27 harness integration/g, 'External scoring harness integration'], [/the in-repo P06-pattern\s+scorer/g, 'the in-repo scorer'], [/\bLLM\b/g, 'language-model']];
-const roadmap = roadmapMd.split('## v1.1 backlog')[1].split(/\n(?=\d+\. )/).map((s) => s.trim()).filter((s) => /^\d+\./.test(s))
-  .map((s) => PLAIN.reduce((acc, [re, rep]) => acc.replace(re, rep), s.replace(/^\d+\.\s*/, '').replace(/\s+/g, ' ')));
-
 function Limits() {
   const cl = deepOf('cliffgrid-3x5');
   const limits = [
@@ -826,7 +826,6 @@ function Limits() {
 }
 
 function Reproduce() {
-  const quoted = Object.fromEntries([...readmeMd.matchAll(/(results_\w+\.json) byte-identical across two runs at sha256 ([0-9a-f]{64})/g)].map((m) => [m[1], m[2]]));
   const totalTests = Object.values(TESTS).reduce((a, b) => a + b, 0);
   return (
     <section id="reproduce" className="card window reveal" data-title="Terminal - python run_*.py">
@@ -844,7 +843,7 @@ function Reproduce() {
           <thead><tr><th>Results file</th><th>sha256 of the committed file (computed at build)</th><th>README quotes</th></tr></thead>
           <tbody>
             {Object.entries(HASHES).map(([p, h]) => {
-              const q = quoted[p.split('/')[1]];
+              const q = QUOTED[p.split('/')[1]];
               return <tr key={p}><td className="mono">{p}</td><td className="mono hash">{h}</td><td>{q ? <span className={`pill ${q === h ? 'good' : 'bad'}`}>{q === h ? 'matches' : 'differs'}</span> : <span className="hint">new in this version</span>}</td></tr>;
             })}
           </tbody>
