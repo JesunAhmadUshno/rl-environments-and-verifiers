@@ -34,3 +34,11 @@ jobs:
         run: python tests/test_deep_rl.py
       - name: Deep runner
         run: python level-3-deep/run_deep.py
+      - name: Verifier fuzz test
+        run: python tests/test_verifier_fuzz.py
+      - name: Deep extras tests
+        run: python tests/test_deep_extras.py
+      - name: Seed sweep runner
+        run: python level-3-deep/run_seeds.py
+      - name: Committed results are reproduced byte for byte
+        run: git diff --exit-code -- level-1-learn level-2-build level-3-deep
