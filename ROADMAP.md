@@ -18,6 +18,9 @@ v1.0 grades named. Nothing here is claimed as done.
    scorer.
 3. Training-seed variance: at least 5 training seeds per task, with
    success and mean return reported as a distribution, not one run.
+   Done in this version: level-3-deep/run_seeds.py retrains every task
+   over 10 training seeds and writes the distribution to
+   level-3-deep/results_seeds.json.
 4. Step-level credit: replace uniform episodic credit with a
    per-step advantage or a learned critic baseline, and re-measure
    the CliffGrid greedy detour (8 steps, return 2 in v1.0).
