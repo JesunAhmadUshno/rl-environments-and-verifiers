@@ -2,6 +2,8 @@
 
 RL environments and verifiers: sandboxed tasks with verifiable rewards, grader tests, reward-hacking post-mortems, wired into the GRPO work in finetune-lab.
 
+Live dashboard: https://jesunahmadushno.github.io/rl-environments-and-verifiers/ (the replay verifier and the GRPO-style trainer run in the browser; the build checks them against the committed results files).
+
 Status: Learn DONE 2026-11-05 (early Sprint 4 pull). Build DONE 2026-11-05. Deep DONE 2026-11-05. v1.0 shipped.
 Project: P26. Fleet node: BlackBox (GPU). Wave: Wave 6 (after P10).
 
