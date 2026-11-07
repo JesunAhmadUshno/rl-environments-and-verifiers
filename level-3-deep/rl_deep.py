@@ -125,6 +125,17 @@ def score_episodes(successes, returns):
             "pass_at_5": pass_at(5)}
 
 
+def pass_at_k_unbiased(n, c, k):
+    """Unbiased pass@k estimator, 1 - C(n-c, k) / C(n, k) (Chen et al. 2021).
+
+    score_episodes reports the block version above (disjoint in-order
+    blocks of k); this one averages over every k-subset of the n samples.
+    """
+    if n - c < k:
+        return 1.0
+    return round(1.0 - math.comb(n - c, k) / math.comb(n, k), 6)
+
+
 # ------------------------------------------------------------ sampling
 def sample_grid_episode(spec, theta, rng):
     steps = []
@@ -203,19 +214,35 @@ def initial_theta(task):
     return theta
 
 
-def train(task, reward_mode, iterations, lr, seed, group=GROUP):
+def mean_baseline_advantages(rewards):
+    """REINFORCE with a mean baseline: reward minus group mean, no std
+    normalisation. Same return shape as group_advantages."""
+    n = len(rewards)
+    mean = sum(rewards) / n
+    std = math.sqrt(sum((r - mean) ** 2 for r in rewards) / n)
+    return [r - mean for r in rewards], mean, std
+
+
+def train(task, reward_mode, iterations, lr, seed, group=GROUP,
+          advantage="group", curve=None):
+    """advantage: "group" (GRPO-style, the recorded runs) or "mean"
+    (REINFORCE with a mean baseline). If curve is a list, one
+    [group mean reward, informative 0/1] pair is appended per iteration."""
     rng = random.Random(seed)
     theta = initial_theta(task)
     informative = 0
+    adv_fn = group_advantages if advantage == "group" else mean_baseline_advantages
     for _ in range(iterations):
         episodes, rewards = [], []
         for _ in range(group):
             steps, traj = sample_episode(task, theta, rng)
             episodes.append(steps)
             rewards.append(episode_reward(task, traj, reward_mode))
-        advantages, _mean, std = group_advantages(rewards)
+        advantages, mean, std = adv_fn(rewards)
         if std >= 1e-12:
             informative += 1
+        if curve is not None:
+            curve.append([round(mean, 6), 1 if std >= 1e-12 else 0])
         apply_group_update(theta, episodes, advantages, lr, group)
     return theta, {"iterations": iterations, "group_size": group,
                    "episodes_sampled": iterations * group,
