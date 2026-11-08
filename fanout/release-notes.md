@@ -20,7 +20,6 @@ https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases
   return -17.07, goal rate 0.085, pit rate 0.295; Q-learning
   greedy (seed 7, 3,000 episodes) 6 steps, return 4, reached
   goal.
-- Level grade: 8,700 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases/tag/v0.1
 
 ## v0.5, Build (2026-11-05)
@@ -34,7 +33,6 @@ https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases
   (seed 11, 3,000 episodes) 6 steps, return 4; bandit optimal
   policy return 50 over 10 pulls; sequence perfect policy
   return 12, accuracy 1.0.
-- Level grade: 8,500 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases/tag/v0.5
 
 ## v1.0, Learn, Build, and Deep (2026-11-05)
@@ -45,7 +43,7 @@ https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases
   verifiers, two measured ablations, written failure modes,
   and 12 new tests (36 tests in total, plus the scaffold
   smoke test). The rest of the v2 Deep scope is named in
-  ROADMAP.md as the v1.1 backlog.
+  REPORT.md as the v1.1 backlog.
 - Result: over 500 evaluation episodes (seeds 9101 to 9105),
   sampled success rose from 0.072 to 0.998 on GridWorld (mean
   return -17.666 to 1.882), from 0.01 to 0.996 on CliffGrid
@@ -55,7 +53,6 @@ https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases
   CliffGrid return-mode ablation collapsed to success 0.0;
   bandit success-mode ablation had 0 of 200 informative
   groups.
-- Level grade: 8,400 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/rl-environments-and-verifiers/releases/tag/v1.0
 
 ## Held channels

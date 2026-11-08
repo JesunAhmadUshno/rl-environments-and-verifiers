@@ -1,6 +1,6 @@
 # Level 3, Deep: rl-environments-and-verifiers
 
-A GRPO-style RLVR run against the four Build environments (SPEC.md
+A GRPO-style RLVR run against the four Build environments (PROPOSAL.md
 Deep scope), built dependency-free in Python stdlib. Design,
 hand-computed oracles, and pre-stated expected directions, written
 before the code: DEEP-SPEC.md.
@@ -114,7 +114,7 @@ task can actually produce at the starting policy.
   reported separately so the gap stays visible.
 - One training seed per task. These are this seed's runs.
   Evaluation variance over 5 eval seeds is reported in
-  results_deep.json; training-seed variance is v1.1 work (ROADMAP.md).
+  results_deep.json; training-seed variance is v1.1 work (REPORT.md).
 - Teaching analogue limits: no KL penalty, no clipping, no critic,
   no token-level credit, four tiny deterministic fully observed
   tasks. Nothing in this level measures LLM training, and no number
@@ -133,21 +133,8 @@ oracles sqrt(3) and -1/sqrt(3), the by-hand single update to
 [-0.25, 0.25, 0.0, 0.0], pass@k oracles, determinism, and a
 short-training bandit check).
 
-## Grade
+## Limits named at this level
 
-8,400 of 10,000 (compressed Deep band). Deductions, itemized:
-- Teaching analogue only: tabular softmax, no LLM, no KL, clipping,
-  or critic (minus 600).
-- One training seed per task; training-seed variance unmeasured
-  (minus 350).
-- Scoring is an in-repo P06-pattern implementation; no external P27
-  harness exists to score against (minus 250).
-- CliffGrid greedy path is suboptimal (8 steps, return 2, against
-  optimal 6 steps, return 4) and sampled grid mean returns sit below
-  optimal under the stochastic policy (minus 200).
-- Uniform step credit assignment is named and measured, not fixed
-  (minus 100).
-- Uninformative-group waste is counted (up to 223 of 300 groups) but
-  not mitigated in v1.0 (minus 100).
-Total deductions 1,600. The rest of the v2 Deep scope is the v1.1
-backlog in the repo-root ROADMAP.md.
+The limits that shaped this level's internal review are kept in
+REPORT.md (threats to validity). The rest of the v2 Deep scope is the
+v1.1 backlog in REPORT.md.

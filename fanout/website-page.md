@@ -27,8 +27,7 @@ over from GRPO is the group-relative advantage; what carries
 over from RLVR is reward only from a verifier.
 
 Status: v1.0, 2026-11-05. Learn, Build, and Deep are done.
-Grades on the house 10,000 scale: Learn 8,700, Build 8,500,
-Deep 8,400. Total tests: 36 hand-computed tests, plus the
+Total tests: 36 hand-computed tests, plus the
 scaffold smoke test.
 
 ## Results (teaching analogue, verifier reward only)

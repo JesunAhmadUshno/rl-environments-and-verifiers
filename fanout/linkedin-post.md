@@ -42,8 +42,7 @@ bandit with a strict success bit had 0 of 200 informative
 groups and never moved. A correct verifier does not imply a
 learnable reward.
 
-Grades, house scale: Learn 8,700, Build 8,500, Deep 8,400 of
-10,000. 36 hand-computed tests, plus the smoke test.
+36 hand-computed tests, plus the smoke test.
 
 What reward definition last surprised you by being correct
 and unlearnable at the same time?

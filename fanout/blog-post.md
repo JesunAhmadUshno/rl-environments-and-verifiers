@@ -39,8 +39,7 @@ replay verifier that grades trajectories by replaying them, and
 tabular Q-learning. The value-iteration greedy policy reaches
 the goal in 6 steps with return 4, the verifier graded 6 of 6
 scenarios as expected, and the Q-learning greedy policy also
-reaches the goal in 6 steps with return 4. Grade 8,700 of
-10,000.
+reaches the goal in 6 steps with return 4.
 
 Build: 4 environments (GridWorld, CliffGrid 3 by 5, a 3-arm
 deterministic bandit with payoffs [2, 5, 3], and a sequence
@@ -48,10 +47,10 @@ memory task with target [2, 0, 1, 2]), replay verifiers grading
 16 of 16 scenarios as expected (4 per environment), and
 reward-hacking post-mortems: return inflation, false goal
 claims, cliff laundering, and payoff forgery, each caught by the
-verifier with a named reason. Grade 8,500 of 10,000.
+verifier with a named reason.
 
 Deep: the GRPO-style RLVR teaching analogue described below,
-with two measured ablations. Grade 8,400 of 10,000.
+with two measured ablations.
 
 ## The main result
 
