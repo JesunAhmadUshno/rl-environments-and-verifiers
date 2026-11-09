@@ -111,7 +111,7 @@ identical to before because the policy never moved.
 - Teaching analogue only: tabular softmax, no LLM, no KL,
   clipping, or critic; four tiny deterministic tasks.
 - One training seed per task; training-seed variance is
-  unmeasured (v1.1 work in ROADMAP.md).
+  unmeasured (v1.1 work in REPORT.md).
 - CliffGrid greedy path after training is suboptimal (8
   steps, return 2, against optimal 6 steps, return 4), and
   sampled grid mean returns sit below optimal.

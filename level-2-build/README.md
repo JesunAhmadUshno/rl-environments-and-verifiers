@@ -1,7 +1,7 @@
 # Level 2, Build: rl-environments-and-verifiers
 
 Four sandboxed environments with grader tests and a reward-hacking
-post-mortem each (SPEC.md Build scope), built dependency-free in Python
+post-mortem each (PROPOSAL.md Build scope), built dependency-free in Python
 stdlib. Design and hand-computed oracles, written before the code:
 BUILD-SPEC.md.
 
@@ -98,24 +98,8 @@ needed for that claim, and no such claim is made here.
     python tests/test_learn_rl.py
     python tests/test_smoke.py
 
-## Grade
-
-P26 Build: 8,500 of 10,000. Deductions: four tiny deterministic tasks,
-so every number proves the verifier loop at teaching scale, not RL at
-scale (minus 600); bandit payoffs are deterministic, so exploration is
-solved by construction and no regret claim is possible (minus 300);
-the sequence target is fixed and public, so memorization and general
-memory cannot be separated at this level (minus 300); Q-learning is
-shown for one seed and one configuration on the one new grid where it
-is trained here (minus 200); no stochastic-transition variant in any
-environment, so risk-sensitive behaviour is untested (minus 100).
-Run on the Muse VM CPU by design (Build here is CPU teaching work;
-the SPEC Build scope needs no GPU), so no fleet-node deduction
-applies. Zero-tolerance: PASS (no invented claim, em dash count 0,
-scaffold never graded as a build).
-
 ## Next
 
 Deep: a GRPO or RLVR run against these environments, before and after
 numbers scored by the P27 harness where it exists, else by P06
-patterns, per SPEC.md.
+patterns, per PROPOSAL.md.

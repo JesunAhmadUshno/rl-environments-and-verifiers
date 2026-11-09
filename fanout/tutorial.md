@@ -108,6 +108,6 @@ I, line-length 120).
 - Count informative groups for a shorter run and compare with
   the recorded counts (55 of 200 GridWorld, 77 of 300
   CliffGrid, 28 of 200 bandit, 90 of 200 sequence).
-- Read ROADMAP.md for the v1.1 backlog: training-seed
+- Read REPORT.md for the v1.1 backlog: training-seed
   variance, an external scoring harness, and the rest of the
   v2 Deep scope.

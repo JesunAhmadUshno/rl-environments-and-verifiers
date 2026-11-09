@@ -1,7 +1,7 @@
 # Level 1, Learn: rl-environments-and-verifiers
 
 One small sandboxed task with a verifiable reward and a grader test suite
-(SPEC.md Learn scope), built dependency-free in Python stdlib.
+(PROPOSAL.md Learn scope), built dependency-free in Python stdlib.
 Design and hand-computed oracles, written before the code: LEARN-SPEC.md.
 
 ## Summary
@@ -63,19 +63,7 @@ is the subject Build expands with post-mortems.
     python tests/test_learn_rl.py
     python tests/test_smoke.py
 
-## Grade
-
-P26 Learn: 8,700 of 10,000. Deductions: one tiny deterministic task, a
-4 by 4 grid, so every number proves the loop, not RL at scale (minus 600);
-gamma fixed at 1.0, no discount or stochastic-transition variant (minus
-300); Q-learning shown for one seed and one configuration (minus 200);
-verifier grades trajectories against this environment only, no second
-task format yet (minus 200). Run on the Muse VM CPU by design (Learn is
-CPU teaching work; the SPEC Learn scope needs no GPU), so no fleet-node
-deduction applies. Zero-tolerance: PASS (no invented claim, em dash
-count 0, scaffold never graded as a build).
-
 ## Next
 
 Build: 3 to 5 environments with grader tests and a reward-hacking
-post-mortem each, per SPEC.md.
+post-mortem each, per PROPOSAL.md.

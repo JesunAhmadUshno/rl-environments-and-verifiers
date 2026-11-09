@@ -12,6 +12,7 @@ const HASHES = __HASHES__; // eslint-disable-line no-undef
 const TESTS = __TESTS__; // eslint-disable-line no-undef
 const QUOTED = __QUOTED__; // eslint-disable-line no-undef
 const roadmap = __ROADMAP__; // eslint-disable-line no-undef
+const VERDICT = __VERDICT__; // eslint-disable-line no-undef
 const f3 = (x) => (Math.round(x * 1000) / 1000).toString();
 const pct = (x, d = 1) => `${(x * 100).toFixed(d)}%`;
 // order-independent deep equality (the results files store keys sorted, the port does not)
@@ -47,7 +48,7 @@ function MenuBar() {
       <a className="m" href={blob('level-1-learn/README.md')}>Learn</a>
       <a className="m" href={blob('level-2-build/README.md')}>Build</a>
       <a className="m" href={blob('level-3-deep/README.md')}>Deep</a>
-      <a className="m" href={blob('docs/research-review.md')}>Review</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
       <span className="spacer" />
       <span className="status"><i /> Python parity checked at build</span>
       <a href={REPO}>GitHub ↗</a>
@@ -191,6 +192,7 @@ function Hero() {
         <a className="btn ghost" href="#trainer">Train a policy live</a>
         <span className="hint">Reproduce with <code>python3 level-3-deep/run_deep.py</code></span>
       </div>
+      <p className="hint"><b>Verdict.</b> {VERDICT}</p>
       <div className="tiles">
         <div className="tile"><div className="num">{build.environment_count}</div><div className="cap">Environments, each with its own replay verifier</div></div>
         <div className="tile"><div className="num">{build.grader_passed_total}/{build.grader_total}</div><div className="cap">Build grader scenarios graded as expected</div></div>
@@ -801,20 +803,20 @@ function Limits() {
     'Replay verifies a log against the rules. It cannot tell whether the task itself is the right task, and it cannot see aggregate gaming such as choosing which episodes to submit.',
     'Two hacks pass replay by design: a bandit log that rewrites both the arm and the payoff consistently, and hard-coding the public sequence target.',
     `Rare-success tasks waste most groups: CliffGrid spent ${cl.train.uninformative_groups} of ${cl.train.iterations} groups with zero variance.`,
-    'Grades in the level READMEs are self-assessed. No external reviewer has scored this work.',
+    'No independent reviewer has re-derived these numbers yet, and no plan was locked before the results: the work is exploratory, not confirmatory.',
   ];
   return (
-    <section id="limits" className="card window reveal" data-title="ROADMAP.md - not done">
+    <section id="limits" className="card window reveal" data-title="REPORT.md - not done">
       <p className="eyebrow">Limits and roadmap</p>
       <h2>What this does not show, and the backlog that is <em>still open</em>.</h2>
       <div className="grid2" style={{ marginTop: 16 }}>
         <div>
           <h3>Threats to validity</h3>
           <ul className="list">{limits.map((x) => <li key={x}>{x}</li>)}</ul>
-          <p className="hint">Full grading against a research rubric: <a href={blob('docs/research-review.md')}>docs/research-review.md</a>.</p>
+          <p className="hint">Method, threats and related work in full: <a href={blob('REPORT.md')}>REPORT.md</a>.</p>
         </div>
         <div>
-          <h3>v1.1 backlog from ROADMAP.md</h3>
+          <h3>v1.1 backlog from REPORT.md</h3>
           <ol className="list roadmap">{roadmap.map((x, i) => {
             const done = x.includes('Done in this version');
             return <li key={i}><span className={`pill ${done ? 'good' : 'warn'}`}>{done ? 'done here' : 'not done'}</span> {x}</li>;
@@ -840,7 +842,7 @@ function Reproduce() {
       </ol>
       <div style={{ overflowX: 'auto', marginTop: 18 }}>
         <table>
-          <thead><tr><th>Results file</th><th>sha256 of the committed file (computed at build)</th><th>README quotes</th></tr></thead>
+          <thead><tr><th>Results file</th><th>sha256 of the committed file (computed at build)</th><th>REPORT.md quotes</th></tr></thead>
           <tbody>
             {Object.entries(HASHES).map(([p, h]) => {
               const q = QUOTED[p.split('/')[1]];
@@ -850,8 +852,8 @@ function Reproduce() {
         </table>
       </div>
       <div className="docs" style={{ marginTop: 20 }}>
-        {[['SPEC.md', 'Spec', 'Scope and acceptance'], ['level-2-build/BUILD-SPEC.md', 'Build spec', 'Rules and hand-computed oracles'], ['level-3-deep/DEEP-SPEC.md', 'Deep spec', 'Method and pre-stated directions'],
-          ['level-2-build/README.md', 'Post-mortems', 'Reward hacking, in full'], ['ROADMAP.md', 'Roadmap', 'The v1.1 backlog'], ['docs/research-review.md', 'Research review', 'Rubric grades and gaps']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
+        {[['PROPOSAL.md', 'Proposal', 'Scope and prior work (not locked)'], ['level-2-build/BUILD-SPEC.md', 'Build spec', 'Rules and hand-computed oracles'], ['level-3-deep/DEEP-SPEC.md', 'Deep spec', 'Method and pre-stated directions'],
+          ['level-2-build/README.md', 'Post-mortems', 'Reward hacking, in full'], ['REPORT.md', 'Report', 'Results, threats and the v1.1 backlog']].map(([p, t, d]) => <a key={p} href={blob(p)}><b>{t}</b><small>{d}</small></a>)}
       </div>
     </section>
   );
