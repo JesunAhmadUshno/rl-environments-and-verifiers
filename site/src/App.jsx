@@ -149,7 +149,7 @@ function ActionStrip({ task, actions }) {
 export default function App() {
   useReveal();
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -167,7 +167,7 @@ export default function App() {
       <Dock />
       <footer>
         Code: Apache-2.0. Every number on this page is imported at build time from the level results files in the repo, or computed live in your browser by a JavaScript port of the repo's Python that the build checks against those files.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
